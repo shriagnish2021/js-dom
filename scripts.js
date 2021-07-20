@@ -1,61 +1,63 @@
-const container = document.querySelector('.container');
+const container = document.querySelector('.container')
 
-let groceryList = []
 const initialHtml = `
     <h1>Grocery List</h1>
     <form>
         <input type="text" id="itemName" name="itemName" placeholder="Item name" required>
-        <input type="number" id="units" name="units" placeholder="Number of units" required>
+        <input type="number" id="units" name="units" placeholder="No. of units" required>
         <input type="number" id="price" name="price" placeholder="Per unit price" required>
         <button type="submit">Add Item</button>
     </form>
     <table></table>
     <span></span>
 `
-container.innerHTML = initialHtml;
+container.innerHTML = initialHtml
 
-const table = document.querySelector('table');
+let groceryList = []
 function displayItems() {
-    const tableHead = `<thead>
-                        <tr>
-                            <th>Grocery Item</th>
-                            <th>Units</th>
-                            <th>Unit Price</th>
-                            <th>Total Price</th>
-                        </tr>
-                    </thead>`
-    const tableRows = groceryList.map((item) => `<tr>
-        <td>${item.groceryItem}</td>
-        <td>${item.noOfUnits}</td>
-        <td>${item.perUnitPrice}</td>
-        <td>${item.noOfUnits * item.perUnitPrice}</td>
-    </tr>`).join('')
+    const table = document.querySelector('table')
+    const tableHead = `
+        <thead>
+            <tr>
+                <th>Item Name</th>
+                <th>Number of Units</th>
+                <th>Unit Price</th>
+                <th>Total Price</th>
+            </tr>
+        </thead>
+    `
+    groceryList = JSON.parse(localStorage.getItem('items'))
+    const tableRows = groceryList.map(item => `
+        <tr>
+            <td>${item.itemName}</td>
+            <td>${item.units}</td>
+            <td>${item.price}</td>
+            <td>${item.units * item.price}</td>
+        </tr>
+    `).join('')
     table.innerHTML = `${tableHead}<tbody>${tableRows}</tbody>`
-    const grandTotal = groceryList.reduce((totalPriceAccumulator,item) => {
-        return totalPriceAccumulator + (item.noOfUnits * item.perUnitPrice);
+    
+    const grandTotal = groceryList.reduce((grandTotalAccumulator,item) => {
+        return grandTotalAccumulator + (item.units * item.price)
     },0)
     const span = document.querySelector('span')
-    span.textContent = `Grand Total : ${grandTotal}`
-    
+    span.innerHTML = `Grand Total : ${grandTotal}`
 }
+displayItems()
 
-const isItems = JSON.parse(localStorage.getItem('items')) 
-if (isItems) {
-    groceryList = isItems;
-    displayItems()
-}
+const form = document.querySelector('form')
 
-const formElement = document.querySelector('form');
-function formElementSubmitHandler(event) {
-    event.preventDefault();
-    const { itemName,units,price } = event.target.elements;
+function formSubmitHandler(event){
+    event.preventDefault()
+    const { itemName,units,price } = event.target.elements
     groceryList.push({
-        groceryItem:itemName.value,
-        noOfUnits:+units.value,
-        perUnitPrice:+price.value
+        itemName:itemName.value,
+        units:+units.value,
+        price:+price.value,
     })
-    displayItems();
     localStorage.setItem('items',JSON.stringify(groceryList))
+    displayItems()
     event.target.reset()
 }
-formElement.addEventListener('submit', formElementSubmitHandler)
+form.addEventListener('submit', formSubmitHandler)
+
