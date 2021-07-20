@@ -1,0 +1,51 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+body {
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.container {
+  width: 40vw;
+  height: 70vh;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+table {
+  background-color: gray;
+  width: 100%;
+  text-align: center;
+  border-collapse: collapse;
+}
+th,
+td {
+  padding: 10px 0;
+}
+span {
+  text-align: right;
+}
+h1 {
+  text-align: center;
+}
+input,
+button {
+  padding: 10px 5px;
+}
+form {
+  display: grid;
+  grid-template-columns: 3fr 1fr 1fr 1fr;
+  grid-gap: 20px;
+}
+thead {
+  border-bottom: 1px solid black;
+}
+th:not(:last-child),
+td:not(:last-child) {
+  border-right: 1px solid black;
+}
